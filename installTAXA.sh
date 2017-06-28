@@ -13,7 +13,7 @@ WORKDIR=/home/scratch
 
 if [ ! -f taxUpdated ]
 then
-yum install vim git wget w3m kernel yum-utils ruby mysql mysql-server mysql-libs gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
+yum install vim git bc wget w3m kernel yum-utils ruby mysql mysql-server mysql-libs gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
 fi
 
 echo "=========== Start mySQL ==========="
@@ -48,8 +48,14 @@ then
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-x64-linux.tar.gz
     tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
 
+    mkdir ncbi-blast-2.6.0+/db
+
+    cd $WORKDIR/ncbi-blast-2.6.0+/db
+
     # Update the nt database
-    sh ncbi-blast-2.6.0+/bin/update_blastdb.pl nt
+    sh ../bin/update_blastdb.pl nt
+
+    cd $WORKDIR
 fi
 
 # Get BioSQL
