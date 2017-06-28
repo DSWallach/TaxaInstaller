@@ -60,19 +60,12 @@ then
     tar -xvf biosql-1.0.1.tar.gz
 fi
 
-
+# Get a default config file
 if [ ! -f /etc/my.cnf ]
 then
     echo "=========== Creating mySQL Config ============"
     # Could be my-(small, medium, large, or huge)
     cp /usr/share/mysql/my-large.cnf /etc/my.cnf
-
-    sed -i 'innodb_data_home_dir = /usr/local/mysql/var/' /etc/my.cnf
-    sed -i 'innodb_data_file_path = ibdata1:10M:autoextend' /etc/my.cnf
-    sed -i 'innodb_log_group_home_dir = /usr/local/mysql/var/' /etc/my.cnf
-    sed -i 'innodb_log_arch_dir = /usr/local/mysql/var/' /etc/my.cnf
-    sed -i 'set-variable = innodb_buffer_pool_size=16M' /etc/my.cnf
-    sed -i 'set-variable = innodb_additional_mem_pool_size=2M' /etc/my.cnf
 fi
 
 # Create the DB
@@ -102,8 +95,8 @@ then
 
     # Modify the run script
     sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt/ncbi\-|${WORKDIR}/ncbi\-|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt/ncbi\-|${WORKDIR}/ncbi\-|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
 
 
