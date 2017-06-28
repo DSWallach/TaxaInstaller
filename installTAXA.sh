@@ -84,13 +84,13 @@ fi
 
 # Load the DB
 echo "=========== Load BioSQL Database =========="
-mysql -u root bioseqdb < sql/biosqldb-mysql.sql
+mysql -u root bioseqdb < $WORKDIR/biosql-1.0.1/sql/biosqldb-mysql.sql
 
 # Update the NCBI taxonomy
 if [ ! -f taxUpdated ]
 then
     echo "========== Update Taxonomy ==========="
-    ./scripts/load_ncbi_taxonomy.pl --dbname bioseqdb --driver mysql --dbuser root --download true
+    $WORKDIR/biosql-1.0.1/scripts/load_ncbi_taxonomy.pl --dbname bioseqdb --driver mysql --dbuser root --download true
     echo "Done" >> taxUpdated
 fi
 
