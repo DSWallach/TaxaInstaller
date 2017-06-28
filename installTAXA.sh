@@ -38,7 +38,7 @@ if [ ! -f $WORKDIR/ncbi-blast-2.6.0+-1.x86_64.rpm ]
 then
     echo "=========== Install Blast Dependencies ============"
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-1.x86_64.rpm
-    yum install ncbi-blast-2.6.0+1.x86_64.rpm
+    yum install ncbi-blast-2.6.0+1.x86_64.rpm -y
 fi
 
 # Build the package from source
@@ -53,7 +53,7 @@ then
     cd $WORKDIR/ncbi-blast-2.6.0+/db
 
     # Update the nt database
-    sh ../bin/update_blastdb.pl nt
+    ../bin/update_blastdb.pl nt
 
     cd $WORKDIR
 fi
