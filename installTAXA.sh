@@ -57,22 +57,29 @@ then
     tar -xvf biosql-1.0.1.tar.gz
 fi
 
-cd biosql-1.0.1/
 
-# Could be my-(small, medium, large, or huge)
-cp /usr/local/mysql/support-files/my-large.cf /etc/my.cnf
+if [ ! -f /etc/my.cnf ]
+then
+    # Could be my-(small, medium, large, or huge)
+    cp /usr/local/mysql/support-files/my-large.cf /etc/my.cnf
 
-sed -i 'innodb_data_home_dir = /usr/local/mysql/var/' /etc/my.cnf
-sed -i 'innodb_data_file_path = ibdata1:10M:autoextend' /etc/my.cnf
-sed -i 'innodb_log_group_home_dir = /usr/local/mysql/var/' /etc/my.cnf
-sed -i 'innodb_log_arch_dir = /usr/local/mysql/var/' /etc/my.cnf
-sed -i 'set-variable = innodb_buffer_pool_size=16M' /etc/my.cnf
-sed -i 'set-variable = innodb_additional_mem_pool_size=2M' /etc/my.cnf
+    sed -i 'innodb_data_home_dir = /usr/local/mysql/var/' /etc/my.cnf
+    sed -i 'innodb_data_file_path = ibdata1:10M:autoextend' /etc/my.cnf
+    sed -i 'innodb_log_group_home_dir = /usr/local/mysql/var/' /etc/my.cnf
+    sed -i 'innodb_log_arch_dir = /usr/local/mysql/var/' /etc/my.cnf
+    sed -i 'set-variable = innodb_buffer_pool_size=16M' /etc/my.cnf
+    sed -i 'set-variable = innodb_additional_mem_pool_size=2M' /etc/my.cnf
+fi
 
 # Create the DB
-mysqladmin -u root create bioseqdb
+if [ ! -d /var/lib/mysql/bioseqdb ]
+then 
+    echo "=========== Creating Database ============"
+    mysqladmin -u root create bioseqdb
+fi
 
 # Load the DB
+echo "=========== Load BioSQL Database =========="
 mysql -u root bioseqdb < sql/biosqldb-mysql.sql
 
 # Update the NCBI taxonomy
@@ -86,10 +93,12 @@ fi
 # Clone the TAXAassign repo
 if [ ! -d $WORKDIR/TAXAassign ]
 then 
+    echo "=========== Clone TAXAassign ==========="
     git clone https://github.com/umerijaz/TAXAassign $WORKDIR/TAXAassign
+
+    # Modify the run script
+    sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt|${WORKDIR}/Dancbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt|${WORKDIR}/ncbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
 
-# Modify the run script
-sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
-sed -i "s|/home/opt|${WORKDIR}/Dancbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
-sed -i "s|/home/opt|${WORKDIR}/ncbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
