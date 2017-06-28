@@ -106,3 +106,7 @@ then
     sed -i "s|/home/opt/ncbi\-|${WORKDIR}/ncbi\-|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
 
+
+# Test the installation
+bash $WORKDIR/TAXAassign/TAXAassign.sh -p -c 10 -t 70 -m 60 -a "60,70,80,95,95,97" -f test.fasta
+
