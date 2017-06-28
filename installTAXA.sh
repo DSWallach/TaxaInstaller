@@ -11,9 +11,12 @@ WORKDIR=/home/scratch
 
 #yum groupinstall "Development Tools" -y
 
+if [ ! -f taxUpdated ]
+then
 yum install vim git wget w3m kernel yum-utils ruby mysql mysql-server gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
+fi
 
-echo "Ensure mySQL is started"
+echo "=========== Start mySQL ==========="
 service mysqld start
 
 # Probably not necessary
@@ -21,7 +24,7 @@ service mysqld start
 
 if [ ! -f /etc/yum.repos.d/home:tange.repo ]
 then
-    echo "Install GNU parallel"
+    echo "=========== Install GNU parallel ==========="
     cd /etc/yum.repos.d/
     wget http://download.opensuse.org/repositories/home:/tange/CentOS_CentOS-6/home:tange.repo
     yum install parallel -y
@@ -33,7 +36,7 @@ cd $WORKDIR
 # This will install the dependencies
 if [ ! -f ncbi-blast-2.6.0+-1.x86_64.rpm ]
 then
-    echo "Install blast"
+    echo "=========== Install Blast Dependencies ============"
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-1.x86_64.rpm
     yum install ncbi-blast-2.6.0+1.x86_64.rpm
 fi
@@ -60,6 +63,7 @@ fi
 
 if [ ! -f /etc/my.cnf ]
 then
+    echo "=========== Creating mySQL Config ============"
     # Could be my-(small, medium, large, or huge)
     cp /usr/local/mysql/support-files/my-large.cf /etc/my.cnf
 
