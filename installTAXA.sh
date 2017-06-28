@@ -13,7 +13,7 @@ WORKDIR=/home/scratch
 
 if [ ! -f taxUpdated ]
 then
-yum install vim git wget w3m kernel yum-utils ruby mysql mysql-server gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
+yum install vim git wget w3m kernel yum-utils ruby mysql mysql-server mysql-libs gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
 fi
 
 echo "=========== Start mySQL ==========="
@@ -34,7 +34,7 @@ cd $WORKDIR
 
 # Install blast
 # This will install the dependencies
-if [ ! -f ncbi-blast-2.6.0+-1.x86_64.rpm ]
+if [ ! -f $WORKDIR/ncbi-blast-2.6.0+-1.x86_64.rpm ]
 then
     echo "=========== Install Blast Dependencies ============"
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-1.x86_64.rpm
@@ -42,7 +42,7 @@ then
 fi
 
 # Build the package from source
-if [ ! -f ncbi-blast-2.6.0+-x64-linux.tar.gz ]
+if [ ! -f $WORKDIR/ncbi-blast-2.6.0+-x64-linux.tar.gz ]
 then
     echo "=========== Build Blast ==========="
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-x64-linux.tar.gz
@@ -53,7 +53,7 @@ then
 fi
 
 # Get BioSQL
-if [ ! -f biosql-1.0.1.tar.gz ]
+if [ ! -f $WORKDIR/biosql-1.0.1.tar.gz ]
 then 
     echo "=========== Download BioSQL ==========="
     wget http://biosql.org/DIST/biosql-1.0.1.tar.gz
@@ -65,7 +65,7 @@ if [ ! -f /etc/my.cnf ]
 then
     echo "=========== Creating mySQL Config ============"
     # Could be my-(small, medium, large, or huge)
-    cp /usr/local/mysql/support-files/my-large.cf /etc/my.cnf
+    cp /usr/share/mysql/my-large.cnf /etc/my.cnf
 
     sed -i 'innodb_data_home_dir = /usr/local/mysql/var/' /etc/my.cnf
     sed -i 'innodb_data_file_path = ibdata1:10M:autoextend' /etc/my.cnf
