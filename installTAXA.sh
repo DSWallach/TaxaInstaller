@@ -102,7 +102,7 @@ then
 
     # Modify the run script
     sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt|${WORKDIR}/Dancbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt|${WORKDIR}/ncbi\-blast\-2\.2\.28\+|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/Dancbi\-|${WORKDIR}/ncbi\-|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/Dancbi\-|${WORKDIR}/ncbi\-|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
 
