@@ -79,10 +79,11 @@ if [ ! -d /var/lib/mysql/bioseqdb ]
 then 
     echo "=========== Creating Database ============"
     mysqladmin -u root create bioseqdb
-    # Load the DB
-    echo "=========== Load BioSQL Database =========="
-    mysql -u root bioseqdb < $WORKDIR/biosql-1.0.1/sql/biosqldb-mysql.sql
 fi
+
+# Load the DB
+echo "=========== Load BioSQL Database =========="
+mysql -u root bioseqdb < $WORKDIR/biosql-1.0.1/sql/biosqldb-mysql.sql
 
 
 # Update the NCBI taxonomy
