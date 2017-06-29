@@ -57,8 +57,8 @@ then
 
     # Uncompress then all
     FILES=$(find . -type f -name "*.tar.gz")
-    for f in $FILEs;
-    do tar -xz "$f" .
+    for f in $FILES;
+    do tar -xz "$f"
     done
 
     cd $WORKDIR
