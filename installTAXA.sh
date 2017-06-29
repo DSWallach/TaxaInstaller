@@ -53,7 +53,7 @@ then
 fi
 
 # Skip if all the db files have been downloaded
-if [ -f $WORKDIR/ncbi-blast-2.6.0+/db/nt.48.tar.gz.md5]
+if [ -f $WORKDIR/ncbi-blast-2.6.0+/db/nt.48.tar.gz.md5 ]
 then
     cd $WORKDIR/ncbi-blast-2.6.0+/db
 
