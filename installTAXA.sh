@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 # Everything will be installed here
+# The NCBI database is ~40GB so plan accordingly
 WORKDIR=/home/scratch
 
 # FOR VM
@@ -49,12 +50,16 @@ then
     tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
 
     mkdir ncbi-blast-2.6.0+/db
+fi
 
+# Skip if all the db files have been downloaded
+if [ -f $WORKDIR/ncbi-blast-2.6.0+/db/nt.48.tar.gz.md5]
+then
     cd $WORKDIR/ncbi-blast-2.6.0+/db
 
     # Update the nt database
     ../bin/update_blastdb.pl nt
-
+    sync
     cd $WORKDIR
 fi
 
@@ -100,7 +105,7 @@ then
     echo "=========== Clone TAXAassign ==========="
     git clone https://github.com/umerijaz/TAXAassign $WORKDIR/TAXAassign
 
-    # Modify the run script
+    # Modify the run script to use the install location
     sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
