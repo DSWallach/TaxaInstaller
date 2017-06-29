@@ -56,9 +56,11 @@ then
     sync
 
     # Uncompress then all
-    FILES=$(find . -type f -name "*.tar.gz")
-    for f in $FILES;
-    do tar -xz "$f"
+    COUNT=0
+    while [ $COUNT < 48];
+
+    do tar -xvz "nt.${COUNT}.tar.gz";
+        ((COUNT++));
     done
 
     cd $WORKDIR
