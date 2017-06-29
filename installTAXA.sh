@@ -57,7 +57,7 @@ then
 
     # Uncompress then all
     COUNT=0
-    while [ $COUNT < 48];
+    while [ $COUNT -lt 48];
 
     do tar -xvz "nt.${COUNT}.tar.gz";
         ((COUNT++));
