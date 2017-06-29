@@ -55,12 +55,9 @@ then
     ../bin/update_blastdb.pl nt
     sync
 
-    # Uncompress then all
-    COUNT=0
-    while [ $COUNT -lt 48];
-
-    do tar -xvz "nt.${COUNT}.tar.gz";
-        ((COUNT++));
+    # Uncompress them all
+    for f in *.tar.gz; do
+        tar -zxvf "$f";
     done
 
     cd $WORKDIR
