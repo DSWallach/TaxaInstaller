@@ -4,18 +4,12 @@
 # The NCBI database is ~40GB so plan accordingly
 WORKDIR=/home/scratch
 
-# FOR VM
-#cd /etc/sysconfig/network-scripts/
-
-#sed -i "DNS1=8.8.8.8" ifcfg-eth0
-#sed -i "DNS2=8.8.4.4" ifcfg-eth0
-
-#yum groupinstall "Development Tools" -y
-
+# Install the necessary applications
 if [ ! -f taxUpdated ]
 then
-yum install vim git bc wget w3m kernel yum-utils ruby mysql mysql-server mysql-libs gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
+    yum install vim git bc wget w3m kernel yum-utils ruby mysql mysql-server mysql-libs gcc g++ make automake autoconf curl-devel openssl-devel zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel ruby-doc ruby-devel rubygems -y
 fi
+
 
 echo "=========== Start mySQL ==========="
 service mysqld start
@@ -60,6 +54,13 @@ then
     # Update the nt database
     ../bin/update_blastdb.pl nt
     sync
+
+    # Uncompress then all
+    FILES=$(find . -type f -name "*.tar.gz")
+    for f in $FILEs;
+    do tar -xz "$f" .
+    done
+
     cd $WORKDIR
 fi
 
