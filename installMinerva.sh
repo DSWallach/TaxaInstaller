@@ -2,7 +2,7 @@
 
 # Everything will be installed here
 # The NCBI database is ~40GB so plan accordingly
-WORKDIR=/sc/orga/clemej05a/wallach
+WORKDIR=/sc/orga/projects/clemej05a/wallach
 
 module load blast
 module load parallel
