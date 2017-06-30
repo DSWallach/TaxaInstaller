@@ -34,8 +34,7 @@ then
 
     # Uncompress all the archives
     for f in *.tar.gz; do
-        tar -zxvf "$f" &
-        rm -f "$f"; # Save space
+        (tar -zxvf "$f"; rm -f "$f")& # Save space
     done
 
     cd $WORKDIR
@@ -70,6 +69,8 @@ echo "=========== Load BioSQL Database =========="
 mysql -u root bioseqdb < $WORKDIR/biosql-1.0.1/sql/biosqldb-mysql.sql
 
 
+
+
 # Update the NCBI taxonomy
 if [ ! -f taxUpdated ]
 then
@@ -89,6 +90,13 @@ then
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
+
+# Get the sqlite3 database
+cd TAXAassign
+mkdir database
+cd database
+wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
+gunzip sqlite.db.gz
 
 # Make a directory for storing test output
 mkdir testOutput
