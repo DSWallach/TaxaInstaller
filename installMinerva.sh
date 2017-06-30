@@ -34,7 +34,7 @@ then
 
     # Uncompress all the archives
     for f in *.tar.gz; do
-        tar -zxvf "$f";
+        tar -zxvf "$f" &
         rm -f "$f"; # Save space
     done
 
@@ -63,6 +63,7 @@ then
     echo "=========== Creating Database ============"
     mysqladmin -u root create bioseqdb
 fi
+
 
 # Load the DB
 echo "=========== Load BioSQL Database =========="
