@@ -5,6 +5,7 @@
 WORKDIR=/sc/orga/projects/clemej05a/wallach
 
 module load blast
+module load bioperl
 module load parallel
 module load sqlite3
 module load CPAN
@@ -41,35 +42,12 @@ then
 fi
 
 # Get BioSQL
-if [ ! -f $WORKDIR/biosql-1.0.1.tar.gz ]
+if [ ! -d $WORKDIR/biosql ]
 then 
-    echo "=========== Download BioSQL ==========="
-    wget http://biosql.org/DIST/biosql-1.0.1.tar.gz
-    tar -xvf biosql-1.0.1.tar.gz
+    git clone https://github.com/biosql/bioql
+    cd biosql
+    sqlite3 database.sqlite3 < biosqldb-sqlite.sql
 fi
-
-# Get a default config file
-if [ ! -f /etc/my.cnf ]
-then
-    echo "=========== Creating mySQL Config ============"
-    # Could be my-(small, medium, large, or huge)
-    cp /usr/share/mysql/my-large.cnf /etc/my.cnf
-fi
-
-# Create the DB
-if [ ! -d /var/lib/mysql/bioseqdb ]
-then 
-    echo "=========== Creating Database ============"
-    mysqladmin -u root create bioseqdb
-fi
-
-
-# Load the DB
-echo "=========== Load BioSQL Database =========="
-mysql -u root bioseqdb < $WORKDIR/biosql-1.0.1/sql/biosqldb-mysql.sql
-
-
-
 
 # Update the NCBI taxonomy
 if [ ! -f taxUpdated ]
@@ -97,6 +75,7 @@ mkdir database
 cd database
 wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
 gunzip sqlite.db.gz
+
 
 # Make a directory for storing test output
 mkdir testOutput
