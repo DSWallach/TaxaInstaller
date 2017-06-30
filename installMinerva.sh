@@ -8,6 +8,7 @@ module load blast
 module load parallel
 module load sqlite3
 module load CPAN
+module load git
 
 cd $WORKDIR
 
