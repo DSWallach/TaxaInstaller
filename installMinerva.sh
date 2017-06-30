@@ -2,7 +2,9 @@
 
 # Everything will be installed here
 # The NCBI database is ~40GB so plan accordingly
+# Change this to run on a different account / different location
 WORKDIR=/sc/orga/projects/clemej05a/wallach
+USER=wallad07
 
 module load blast
 module load bioperl
@@ -33,7 +35,7 @@ then
     ../bin/update_blastdb.pl nt
     sync
 
-    # Uncompress all the archives
+    #3 Uncompress all the archives
     for f in *.tar.gz; do
         (tar -zxvf "$f"; rm -f "$f")& # Save space
     done
@@ -49,11 +51,21 @@ then
     sqlite3 database.sqlite3 < biosqldb-sqlite.sql
 fi
 
+# Get the sqlite3 database
+if [ ! -d $WORKDIR/TAXAassign/database ]
+then
+    cd TAXAassign
+    mkdir database
+    cd database
+    wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
+    gunzip sqlite.db.gz
+fi
+
 # Update the NCBI taxonomy
 if [ ! -f taxUpdated ]
 then
     echo "========== Update Taxonomy ==========="
-    $WORKDIR/biosql-1.0.1/scripts/load_ncbi_taxonomy.pl --dbname bioseqdb --driver mysql --dbuser root --download true
+    $WORKDIR/biosql/scripts/load_ncbi_taxonomy.pl --dbname $WORKDIR/TAXAassign/db.sqlite --driver SQLite --dbuser $USER --download true
     echo "Done" >> taxUpdated
 fi
 
@@ -69,18 +81,7 @@ then
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
 fi
 
-# Get the sqlite3 database
-if [ ! -d $WORKDIR/TAXAassign/database ]
-then
-    cd TAXAassign
-    mkdir database
-    cd database
-    wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
-    gunzip sqlite.db.gz
-fi
-
 cd $WORKDIR
-
 
 # Make a directory for storing test output
 mkdir testOutput
