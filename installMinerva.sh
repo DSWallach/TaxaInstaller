@@ -70,11 +70,16 @@ then
 fi
 
 # Get the sqlite3 database
-cd TAXAassign
-mkdir database
-cd database
-wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
-gunzip sqlite.db.gz
+if [ ! -d $WORKDIR/TAXAassign/database ]
+then
+    cd TAXAassign
+    mkdir database
+    cd database
+    wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
+    gunzip sqlite.db.gz
+fi
+
+cd $WORKDIR
 
 
 # Make a directory for storing test output
