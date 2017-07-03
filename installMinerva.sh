@@ -45,14 +45,14 @@ fi
 # Get MySQL
 if [ ! -d mysql-5.7.18-linux-glibc2.5-x86_64 ]
 then
-    wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
-    tar zxvf mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
-    rm mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+    wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-boost-5.7.18.tar.gz 
+    tar zxvf mysql-boost-5.7.18.tar.gz 
+    rm mysql-boost-5.7.18.tar.gz 
 fi
 # Setup MySQL
 if [ ! -f $WORKDIR/sqlSetup ]
 then
-    cd mysql-5.7.18-linux-glibc2.5-x86_64
+    cd mysql-boost-5.7.18
     mkdir $WORKDIR/MySQL
     mkdir $WORKDIR/MySQL/data
     mkdir $WORKDIR/MySQL/etc
