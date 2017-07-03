@@ -52,7 +52,7 @@ then
 fi
 
 # Get the sqlite3 database
-if [ ! -d $WORKDIR/TAXAassign/database ]
+if [ ! -f $WORKDIR/sqlite.db.gz ]
 then
     cd TAXAassign
     mkdir database
