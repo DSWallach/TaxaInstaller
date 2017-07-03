@@ -39,8 +39,27 @@ then
     for f in *.tar.gz; do
         (tar -zxvf "$f"; rm -f "$f")& # Save space
     done
-
     cd $WORKDIR
+fi
+
+# Get MySQL
+if [ ! -d mysql-5.7.18-linux-glibc2.5-x86_64 ]
+then
+    wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+    tar zxvf mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+    rm mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+    cd mysql-5.7.18-linux-glibc2.5-x86_64
+    mkdir $WORKDIR/MySQL
+    mkdir $WORKDIR/MySQL/data
+    mkdir $WORKDIR/MySQL/etc
+    cmake -D MYSQL_DATADIR=$WORKDIR/MySQL/data -D SYSCONFDIR=$WORKDIR/MySQL/etc -D CMAKE_INSTALL_PREFIX=$WORKDIR/MySQL .
+    make
+    make install
+    cd $WORKDIR/MySQL
+    scripts/mysql_install_db
+
+    bin/mysql_safe &
+    bin/mysqladmin -u root
 fi
 
 # Get BioSQL
