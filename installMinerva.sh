@@ -6,22 +6,22 @@
 WORKDIR=/sc/orga/projects/clemej05a/wallach
 USER=wallad07
 
-module load blast
 module load bioperl
 module load parallel
 module load sqlite3
 module load CPAN
-module load git
+module load blast
 
 cd $WORKDIR
 
 
 # Build the package from source
-if [ ! -f $WORKDIR/ncbi-blast-2.6.0+-x64-linux.tar.gz ]
+if [ ! -d $WORKDIR/ncbi-blast-2.6.0+ ]
 then
     echo "=========== Build Blast ==========="
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.6.0/ncbi-blast-2.6.0+-x64-linux.tar.gz
     tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
+    rm -f ncbi-blast-2.6.0+-x64-linux.tar.gz
 
     mkdir ncbi-blast-2.6.0+/db
 fi
@@ -52,7 +52,7 @@ then
 fi
 
 # Get the sqlite3 database
-if [ ! -f $WORKDIR/sqlite.db.gz ]
+if [ ! -f $WORKDIR/db.sqlite ]
 then
     cd TAXAassign
     mkdir database
@@ -82,6 +82,12 @@ then
 fi
 
 cd $WORKDIR
+
+# Remove test directory if it exists
+if [ -d testOutput ]
+then
+	rm -rf testOutput
+fi
 
 # Make a directory for storing test output
 mkdir testOutput
