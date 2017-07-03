@@ -48,6 +48,10 @@ then
     wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
     tar zxvf mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
     rm mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+fi
+# Setup MySQL
+if [ ! -f $WORKDIR/sqlSetup ]
+then
     cd mysql-5.7.18-linux-glibc2.5-x86_64
     mkdir $WORKDIR/MySQL
     mkdir $WORKDIR/MySQL/data
@@ -60,6 +64,8 @@ then
 
     bin/mysql_safe &
     bin/mysqladmin -u root
+
+    echo "Done" >> sqlSetup
 fi
 
 # Get BioSQL
