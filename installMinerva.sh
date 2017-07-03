@@ -52,7 +52,7 @@ then
 fi
 
 # Get the sqlite3 database
-if [ ! -f $WORKDIR/db.sqlite ]
+if [ ! -f $WORKDIR/database/db.sqlite ]
 then
     cd TAXAassign
     mkdir database
@@ -79,6 +79,9 @@ then
     sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
     sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
+
+    # Modfiy the python script to use sqlite3 instead of MySQL
+    sed -i "s|use_MySQL=True|use_MySQL=False|" $WORKDIR/TAXAassign/scripts/blast_concat_taxon.py
 fi
 
 cd $WORKDIR
