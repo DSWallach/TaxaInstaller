@@ -74,18 +74,17 @@ then
     cd database
     wget http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/db.sqlite.gz
     gunzip sqlite.db.gz
+    cd $WORKDIR
 fi
 
 # Update the NCBI taxonomy
 if [ ! -f taxUpdated ]
 then
     echo "========== Update Taxonomy ==========="
-    $WORKDIR/biosql/scripts/load_ncbi_taxonomy.pl --dbname $WORKDIR/TAXAassign/db.sqlite --driver SQLite --dbuser $USER --download true
+    $WORKDIR/biosql/scripts/load_ncbi_taxonomy.pl --dbname $WORKDIR/TAXAassign/database/db.sqlite --driver SQLite --dbuser $USER --download true
     echo "Done" >> taxUpdated
 fi
 
-
-cd $WORKDIR
 
 # Remove test directory if it exists
 if [ -d testOutput ]
