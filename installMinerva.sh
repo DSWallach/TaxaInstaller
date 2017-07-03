@@ -51,6 +51,21 @@ then
     sqlite3 database.sqlite3 < biosqldb-sqlite.sql
 fi
 
+# Clone the TAXAassign repo
+if [ ! -d $WORKDIR/TAXAassign ]
+then 
+    echo "=========== Clone TAXAassign ==========="
+    git clone https://github.com/umerijaz/TAXAassign $WORKDIR/TAXAassign
+
+    # Modify the run script to use the install location
+    sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
+    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
+
+    # Modfiy the python script to use sqlite3 instead of MySQL
+    sed -i "s|use_MySQL=True|use_MySQL=False|" $WORKDIR/TAXAassign/scripts/blast_concat_taxon.py
+fi
+
 # Get the sqlite3 database
 if [ ! -f $WORKDIR/TAXAassign/database/db.sqlite ]
 then
@@ -69,20 +84,6 @@ then
     echo "Done" >> taxUpdated
 fi
 
-# Clone the TAXAassign repo
-if [ ! -d $WORKDIR/TAXAassign ]
-then 
-    echo "=========== Clone TAXAassign ==========="
-    git clone https://github.com/umerijaz/TAXAassign $WORKDIR/TAXAassign
-
-    # Modify the run script to use the install location
-    sed -i "s|\`pwd\`|${WORKDIR}/TAXAassign|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
-    sed -i "s|/home/opt/ncbi\-blast\-2\.2\.28|${WORKDIR}/ncbi\-blast\-2\.6\.0|" $WORKDIR/TAXAassign/TAXAassign.sh
-
-    # Modfiy the python script to use sqlite3 instead of MySQL
-    sed -i "s|use_MySQL=True|use_MySQL=False|" $WORKDIR/TAXAassign/scripts/blast_concat_taxon.py
-fi
 
 cd $WORKDIR
 
