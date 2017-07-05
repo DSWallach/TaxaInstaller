@@ -5,6 +5,8 @@
 # Change this to run on a different account / different location
 WORKDIR=/sc/orga/projects/clemej05a/wallach
 USER=wallad07
+DBI_USER=wallad07_db1
+DBI_PASSWORD=wallad07_db1
 
 module load bioperl
 module load parallel
