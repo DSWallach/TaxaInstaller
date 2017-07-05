@@ -2,20 +2,20 @@
 
 # Everything will be installed here
 # The NCBI database is ~40GB so plan accordingly
+# BioSQL will require an active account on the HPC SQL server
 # Change this to run on a different account / different location
 WORKDIR=/sc/orga/projects/clemej05a/wallach
 USER=wallad07
 DBI_USER=wallad07_db1
-DBI_PASSWORD=wallad07_db1
+# Set with the password for your DB account
+#DBI_PASSWORD=wallad07_db1
 
 module load bioperl
 module load parallel
-module load sqlite3
 module load CPAN
 module load blast
 
 cd $WORKDIR
-
 
 # Build the package from source
 if [ ! -d $WORKDIR/ncbi-blast-2.6.0+ ]
@@ -44,33 +44,7 @@ then
     cd $WORKDIR
 fi
 
-# Get MySQL
-if [ ! -d mysql-5.7.18 ]
-then
-    wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18.tar.gz --no-check-certificate
-    tar zxvf mysql-5.7.18.tar.gz 
-    rm mysql-5.7.18.tar.gz 
-fi
-# Setup MySQL
-if [ ! -f $WORKDIR/sqlSetup ]
-then
-    cd mysql-5.7.18
-    mkdir $WORKDIR/MySQL
-    mkdir $WORKDIR/MySQL/data
-    mkdir $WORKDIR/MySQL/etc
-    cmake -D MYSQL_DATADIR=$WORKDIR/MySQL/data -D SYSCONFDIR=$WORKDIR/MySQL/etc -D CMAKE_INSTALL_PREFIX=$WORKDIR/MySQL .
-    make
-    make install
-    cd $WORKDIR/MySQL
-    scripts/mysql_install_db
-
-    bin/mysql_safe &
-    bin/mysqladmin -u root
-
-    echo "Done" >> sqlSetup
-fi
-
-# Get BioSQL
+# Get the latest version of BioSQL
 if [ ! -d $WORKDIR/biosql ]
 then 
     git clone https://github.com/biosql/bioql
@@ -111,7 +85,6 @@ then
     $WORKDIR/biosql/scripts/load_ncbi_taxonomy.pl --dbname $WORKDIR/TAXAassign/database/db.sqlite --driver SQLite --dbuser $USER --download true
     echo "Done" >> taxUpdated
 fi
-
 
 # Remove test directory if it exists
 if [ -d testOutput ]
