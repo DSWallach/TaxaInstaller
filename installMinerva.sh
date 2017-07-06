@@ -37,10 +37,11 @@ then
     ../bin/update_blastdb.pl nt
     sync
 
-    #3 Uncompress all the archives
+#3 Uncompress all the archives
     for f in *.tar.gz; do
-        (tar -zxvf "$f"; rm -f "$f")& # Save space
+    tar -zxvf "$f";
     done
+
     cd $WORKDIR
 fi
 
